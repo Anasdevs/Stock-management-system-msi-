@@ -1,2 +1,2 @@
-# Faculty-Feedback-System
-Faculty Feedback System for MPR
+# Stock management system
+Stock Management System for MPR
