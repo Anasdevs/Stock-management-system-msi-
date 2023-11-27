@@ -1,6 +1,8 @@
-.body{
-  background-color: gainsboro;
+.main{
+  /* background-color: gainsboro; */
+  background-color: #eff7fb;
 }
+
 .nav-item{
   text-decoration: none;
 }
