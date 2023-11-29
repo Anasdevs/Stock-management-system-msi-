@@ -9,27 +9,31 @@
     <title>Simple Sidebar</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous">
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
         .sidebar {
             height: 100vh;
-            width: 200px;
+            width: 12.5%;
             background-color: #082c40;
             color: rgb(0, 0, 19);
             padding: 15px;
-        
+
         }
-        .nav-item{
+
+        .nav-item {
             margin-top: 20px;
+            text-wrap: wrap;
         }
+
         .nav-link {
             color: #DDF2FD;
         }
+
         .content {
             padding: 15px;
         }
-        h2{
+
+        h2 {
             color: #ffffff;
         }
     </style>
@@ -37,16 +41,17 @@
 
 <body>
     <div class="sidebar">
-        <h2 >Stockflow</h2>
+        <h2>Stockflow</h2>
         <ul class="nav flex-column mt-5">
             <li class="nav-item">
                 <a class="nav-link active" href="/">Dashboard</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/reports">Generate Reports</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Vendors</a>
+                <a class="nav-link" href="/issued">Issued Items</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/reports">Generate Reports</a>
             </li>
         </ul>
     </div>

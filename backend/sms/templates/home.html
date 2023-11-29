@@ -15,48 +15,65 @@
   <div class="sidebar">
     <h2>Stockflow</h2>
     <div class="container">
-      {% include 'sidebar.html' %}  
-    </div>  
+      {% include 'sidebar.html' %}
+    </div>
   </div>
   <div class="d-flex justify-content-end custom-margin">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newEntryModal">
-      New Entry  
+      New Entry
     </button>
   </div>
   <div class="Table-container">
-  <h3>Purchase history</h3>
-  <table class="table table-hover table-bordered">
-    <thead>
-      <tr>
-        <th scope="col">Item Name</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Invoice No.</th>
-        <th scope="col">Billing Date</th>
-        <th scope="col">Date of Entry</th>
-        <th scope="col">Total Amount</th>
-        <th scope="col">Seller Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Almiras</td>
-        <td>10</td>
-        <td>637352</td>
-        <td>5 July 23</td>
-        <td>7 July 23</td>
-        <td>10,000</td>
-        <td>ABC</td>
-      </tr>
-      <tr>
-        <td>Tables</td>
-        <td>17</td>
-        <td>837352</td>
-        <td>1 August 23</td>
-        <td>2 August 23</td>
-        <td>5,000</td>
-        <td>XYZ</td>
-      </tr>
-      <tr>
+    <h3>Purchase history</h3>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Item Name</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Invoice No.</th>
+          <th scope="col">Billing Date</th>
+          <th scope="col">Date of Entry</th>
+          <th scope="col">Total Amount</th>
+          <th scope="col">Seller Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Almiras</td>
+          <td>10</td>
+          <td>637352</td>
+          <td>5 July 23</td>
+          <td>7 July 23</td>
+          <td>10,000</td>
+          <td>ABC</td>
+        </tr>
+        <tr>
+          <td>Tables</td>
+          <td>17</td>
+          <td>837352</td>
+          <td>1 August 23</td>
+          <td>2 August 23</td>
+          <td>5,000</td>
+          <td>XYZ</td>
+        </tr>
+        <tr>
+          <td>Keyboards</td>
+          <td>50</td>
+          <td>938467</td>
+          <td>9 August 23</td>
+          <td>11 August 23</td>
+          <td>20,000</td>
+          <td>ABC</td>
+        </tr>
+        <tr>
+          <td>Tables</td>
+          <td>17</td>
+          <td>837352</td>
+          <td>1 August 23</td>
+          <td>2 August 23</td>
+          <td>5,000</td>
+          <td>XYZ</td>
+        </tr>
         <td>Keyboards</td>
         <td>50</td>
         <td>938467</td>
@@ -64,77 +81,60 @@
         <td>11 August 23</td>
         <td>20,000</td>
         <td>ABC</td>
-      </tr>
-      <tr>
-        <td>Tables</td>
-        <td>17</td>
-        <td>837352</td>
-        <td>1 August 23</td>
-        <td>2 August 23</td>
-        <td>5,000</td>
-        <td>XYZ</td>
-      </tr>
-      <td>Keyboards</td>
-      <td>50</td>
-      <td>938467</td>
-      <td>9 August 23</td>
-      <td>11 August 23</td>
-      <td>20,000</td>
-      <td>ABC</td>
-    </tr>
-    </tbody>
-  </table>
-  <div class="modal fade" id="newEntryModal" tabindex="-1" aria-labelledby="newEntryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="newEntryModalLabel">New Purchase Entry</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-2">
-              <label class="form-label">Item Name</label>
-              <input type="text" class="form-control">
-            </div>
-        
-            <div class="mb-2">
-              <label class="form-label">Quantity</label>
-              <input type="number" class="form-control">
-            </div>
-  
-            <div class="mb-2">
-              <label class="form-label">Invoice No.</label>
-              <input type="number" class="form-control">
-            </div>
+        </tr>
+      </tbody>
+    </table>
+    <div class="modal fade" id="newEntryModal" tabindex="-1" aria-labelledby="newEntryModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newEntryModalLabel">New Purchase Entry</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-2">
+                <label class="form-label">Item Name</label>
+                <input type="text" class="form-control">
+              </div>
 
-            <div class="mb-2">
-              <label class="form-label">Billing Date</label>
-              <input type="number" class="form-control">
-            </div>
+              <div class="mb-2">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control">
+              </div>
 
-            <div class="mb-2">
-              <label class="form-label">Date of Entry</label>
-              <input type="number" class="form-control">
-            </div>
+              <div class="mb-2">
+                <label class="form-label">Invoice No.</label>
+                <input type="number" class="form-control">
+              </div>
 
-            <div class="mb-2">
-              <label class="form-label">Total amount</label>
-              <input type="number" class="form-control">
-            </div>
+              <div class="mb-2">
+                <label class="form-label">Billing Date</label>
+                <input type="number" class="form-control">
+              </div>
 
-            <div class="mb-2">
-              <label class="form-label">Vendor name</label>
-              <input type="number" class="form-control">
-            </div>
+              <div class="mb-2">
+                <label class="form-label">Date of Entry</label>
+                <input type="number" class="form-control">
+              </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+              <div class="mb-2">
+                <label class="form-label">Total amount</label>
+                <input type="number" class="form-control">
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label">Vendor name</label>
+                <input type="number" class="form-control">
+              </div>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
