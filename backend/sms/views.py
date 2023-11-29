@@ -9,3 +9,6 @@ def issued(request):
 
 def sidebar(request):
     return render(request, 'sidebar.html')
+
+def reports(request):
+    return render(request, 'reports.html')
