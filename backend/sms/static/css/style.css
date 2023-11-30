@@ -36,3 +36,9 @@ table {
   left: 0;
   padding-top: 20px;
 }
+
+#showFormBtn{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
