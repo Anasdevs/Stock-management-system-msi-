@@ -26,4 +26,3 @@ class IssuedItem(models.Model):
     Issue_Date = models.DateField()
     Department = models.CharField(max_length=50, choices=DEPARTMENT_CHOICES)
     Location = models.CharField(max_length=50)
-
