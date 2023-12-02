@@ -5,7 +5,7 @@ from .models import Purchase, IssuedItem, Items, Faculty
 
 def index(request):
     if request.method == 'POST':
-        item_names = Items.objects.values_list('name', flat=True).all()
+        item_names = request.POST.get('item_names')
         quantity = request.POST.get('quantity')
         invoice_number = request.POST.get('invoice_number')
         billing_date = request.POST.get('billing_date')
@@ -29,7 +29,7 @@ def index(request):
     submitted = False
     message_list = messages.get_messages(request)
 
-    return render(request, 'home.html', {'submitted': submitted, 'messages': message_list})
+    return render(request, 'home.html', {'submitted': submitted, 'messages': message_list,'item_names':Items.objects.values_list('name', flat=True).all()})
 
 
 def issued(request):
