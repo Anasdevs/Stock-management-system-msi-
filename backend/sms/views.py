@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import request
 from django.contrib import messages
-from .models import Purchase
+from .models import Purchase, IssuedItem, Items, Faculty
 
 def index(request):
-
     if request.method == 'POST':
-        item_name = request.POST.get('item_name')
+        item_names = Items.objects.values_list('name', flat=True).all()
         quantity = request.POST.get('quantity')
         invoice_number = request.POST.get('invoice_number')
         billing_date = request.POST.get('billing_date')
@@ -15,7 +14,7 @@ def index(request):
         seller_name = request.POST.get('seller_name')
 
         Purchase.objects.create(
-            ItemName=item_name,
+            ItemName=item_names,
             Quantity=quantity,
             Invoice_Number=invoice_number,
             Billing_Date=billing_date,
