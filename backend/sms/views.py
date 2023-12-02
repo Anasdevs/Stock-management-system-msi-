@@ -4,7 +4,6 @@ from django.contrib import messages
 from .models import Purchase
 
 def index(request):
-    submitted = False
 
     if request.method == 'POST':
         item_name = request.POST.get('item_name')
@@ -26,9 +25,12 @@ def index(request):
         )
 
         messages.success(request, 'Data submitted!')
-        submitted = True
+        return redirect('index')
 
-    return render(request, 'home.html', {'submitted': submitted})
+    submitted = False
+    message_list = messages.get_messages(request)
+
+    return render(request, 'home.html', {'submitted': submitted, 'messages': message_list})
 
 
 def issued(request):
