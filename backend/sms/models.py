@@ -22,6 +22,10 @@ class Items(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def save( self ,*args,**kwargs):
+        self.quantity = self.quantity + Purchase.Quantity - IssuedItem.Quantity
+        super(Items,self).save(*args,**kwargs)
 
 
 class Purchase(models.Model):
@@ -36,10 +40,16 @@ class Purchase(models.Model):
     CGST = models.IntegerField(default=0)
     SGST = models.IntegerField(default=0)
     Extra_charges = models.IntegerField(default=0)
+    GST = models.IntegerField(default=0)
     Invoice=models.FileField(upload_to='invoice',null=True,blank=True)
 
     def __str__(self):
         return (self.ItemName,self.Invoice_Number)
+    
+    def save (self, *args,**kwargs):
+        self.GST = self.CGST + self.SGST + self.Extra_charges
+        self.Total_Amount = self.Quantity * self.Rate + self.GST
+        super(Purchase,self).save(*args,**kwargs)
 
 class IssuedItem(models.Model):
     ItemName = models.ForeignKey(Purchase, on_delete=models.DO_NOTHING, related_name='issued_item_itemname') 
@@ -52,3 +62,4 @@ class IssuedItem(models.Model):
 
     def __str__(self):
         return (self.ItemName,self.Name_of_Employee,self.Department)
+    
