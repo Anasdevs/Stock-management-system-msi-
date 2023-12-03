@@ -32,7 +32,7 @@ class Purchase(models.Model):
     ItemName = models.ForeignKey(Items,max_length=50,on_delete=models.DO_NOTHING,related_name='purchase_itemname')
     Quantity = models.IntegerField()
     Rate = models.IntegerField(default=0)
-    Invoice_Number = models.IntegerField()
+    Invoice_Number = models.CharField(max_length=50)
     Billing_Date = models.DateField()
     Date_of_Entry = models.DateField()
     Total_Amount = models.IntegerField()
@@ -44,12 +44,12 @@ class Purchase(models.Model):
     Invoice=models.FileField(upload_to='invoice',null=True,blank=True)
 
     def __str__(self):
-        return (self.ItemName,self.Invoice_Number)
+        return f"{self.ItemName.name} - {self.Invoice_Number}"
     
-    def save (self, *args,**kwargs):
-        self.GST = self.CGST + self.SGST + self.Extra_charges
-        self.Total_Amount = self.Quantity * self.Rate + self.GST
-        super(Purchase,self).save(*args,**kwargs)
+    # def save (self, *args,**kwargs):
+    #     self.GST = self.CGST + self.SGST + self.Extra_charges
+    #     self.Total_Amount = self.Quantity * self.Rate + self.GST
+    #     super(Purchase,self).save(*args,**kwargs)
 
 class IssuedItem(models.Model):
     ItemName = models.ForeignKey(Purchase, on_delete=models.DO_NOTHING, related_name='issued_item_itemname') 

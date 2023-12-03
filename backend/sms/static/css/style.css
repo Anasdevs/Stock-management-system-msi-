@@ -20,13 +20,13 @@
   position: absolute;
   right: 0px;
 }
-table {
+/* table {
   width: 80%;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(202, 23, 23, 0.15);
   margin: 10px;
   border-radius: 10px; 
-}
+} */
 
 .sidebar {
   height: 100%;
