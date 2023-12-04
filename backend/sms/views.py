@@ -96,8 +96,9 @@ def issued(request):
             item.save()
 
             # Add a success message
-            message = "Item issued successfully."
-            return render(request, 'Issued.html', {'message': message})
+            messages.success(request, 'Item issued successfully!')
+            
+            return render(request, 'Issued.html')
 
         except Items.DoesNotExist:
             return HttpResponse("Item not found in Items table")
@@ -113,8 +114,10 @@ def issued(request):
     faculty_names = Faculty.objects.all()
     items = Items.objects.values_list('name', flat=True).distinct()
     departments = Department.objects.all()
+    message_list = messages.get_messages(request)
 
-    return render(request, 'Issued.html', {'faculty_names': faculty_names, 'items': items, 'issued_items': issued_items, 'departments': departments})
+
+    return render(request, 'Issued.html', {'faculty_names': faculty_names, 'items': items, 'issued_items': issued_items, 'departments': departments, 'messages': message_list})
 
 
  
