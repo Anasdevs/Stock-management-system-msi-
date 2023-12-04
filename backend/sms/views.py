@@ -54,23 +54,28 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from .models import IssuedItem, Faculty, Purchase
+from django.db import transaction
 
 
 
 from datetime import datetime  # Add this import if not already present
-
 def issued(request):
     if request.method == 'POST':
         item_name = request.POST.get('item_name')
-        quantity = request.POST.get('quantity')
+        quantity = int(request.POST.get('quantity'))
         employee_name = request.POST.get('employee_name')
-        issue_date_str = request.POST.get('issue_date')  # Assuming 'issue_date' is the name of the date input in your form
+        issue_date_str = request.POST.get('issue_date')
         department_name = request.POST.get('department')
         location = request.POST.get('location')
 
         try:
             # Get the item from the Items table
             item = get_object_or_404(Items, name=item_name)
+
+            # Check if there are enough items in inventory
+            if item.QuantityInInventory < quantity:
+                messages.error(request, 'Not enough items in inventory.')
+                return redirect('issued')
 
             # Get the employee from the Faculty table
             employee = get_object_or_404(Faculty, name=employee_name)
@@ -81,24 +86,26 @@ def issued(request):
             # Convert issue_date string to a datetime object
             issue_date = datetime.strptime(issue_date_str, '%Y-%m-%d').date()
 
-            # Create and save IssuedItem
-            issued_item = IssuedItem.objects.create(
-                ItemName=item,
-                Quantity=quantity,
-                Name_of_Employee=employee,
-                Issue_Date=issue_date,
-                Department=department,
-                Location=location,
-            )
+            # Use a transaction to ensure atomicity
+            with transaction.atomic():
+                # Create and save IssuedItem
+                issued_item = IssuedItem.objects.create(
+                    ItemName=item,
+                    Quantity=quantity,
+                    Name_of_Employee=employee,
+                    Issue_Date=issue_date,
+                    Department=department,
+                    Location=location,
+                )
 
-            # Update the quantity in the Items model
-            item.QuantityInInventory -= int(quantity)
-            item.save()
+                # Update the quantity in the Items model
+                item.QuantityInInventory -= quantity
+                item.ItemsIssued += quantity
+                item.save()
 
             # Add a success message
             messages.success(request, 'Item issued successfully!')
-            
-            return render(request, 'Issued.html')
+            return redirect('issued')
 
         except Items.DoesNotExist:
             return HttpResponse("Item not found in Items table")
@@ -116,10 +123,7 @@ def issued(request):
     departments = Department.objects.all()
     message_list = messages.get_messages(request)
 
-
     return render(request, 'Issued.html', {'faculty_names': faculty_names, 'items': items, 'issued_items': issued_items, 'departments': departments, 'messages': message_list})
-
-
  
 
 
