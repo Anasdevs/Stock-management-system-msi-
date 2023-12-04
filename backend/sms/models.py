@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Sum
+
 
 DEPARTMENT_CHOICES = [
     ('BCA', 'BCA'),
@@ -14,18 +16,22 @@ class Faculty(models.Model):
     department = models.CharField(max_length=50, choices=DEPARTMENT_CHOICES)
 
     def __str__(self):
-        return (self.name,self.faculty_id,self.department)
+        return f"{self.name} - {self.faculty_id} - {self.department}"
+        
 
 class Items(models.Model):
     name = models.CharField(max_length=50)
     Quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
     
-    def save( self ,*args,**kwargs):
-        self.quantity = self.quantity + Purchase.Quantity - IssuedItem.Quantity
-        super(Items,self).save(*args,**kwargs)
+    def save(self, *args, **kwargs):
+        total_purchase_quantity = Purchase.objects.filter(ItemName=self).aggregate(Sum('Quantity'))['Quantity__sum'] or 0
+        total_issued_quantity = IssuedItem.objects.filter(ItemName__ItemName=self).aggregate(Sum('Quantity'))['Quantity__sum'] or 0
+
+        self.quantity = total_purchase_quantity - total_issued_quantity
+        super(Items, self).save(*args, **kwargs)
 
 
 class Purchase(models.Model):
@@ -56,10 +62,10 @@ class IssuedItem(models.Model):
     Quantity = models.IntegerField()
     Name_of_Employee = models.ForeignKey(Faculty,max_length=50,on_delete=models.DO_NOTHING,related_name='issued_item_name_of_employee')
     Issue_Date = models.DateField()
-    Department = models.ForeignKey(Faculty,max_length=50,choices=DEPARTMENT_CHOICES,on_delete=models.SET("Faculty Not Found"))
+    # Department = models.ForeignKey(Faculty,max_length=50,choices=DEPARTMENT_CHOICES,on_delete=models.SET("Faculty Not Found"))
     Location = models.CharField(max_length=50)
     physical_verification = models.BooleanField(default=False)
 
     def __str__(self):
-        return (self.ItemName,self.Name_of_Employee,self.Department)
+        return f"{self.ItemName} - {self.Name_of_Employee}"
     
