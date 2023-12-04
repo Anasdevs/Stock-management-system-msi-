@@ -104,7 +104,7 @@ def issued(request):
                 item.save()
 
             # Add a success message
-            messages.success(request, 'Item issued successfully!')
+            messages.success(request, 'Item issued!')
             return redirect('issued')
 
         except Items.DoesNotExist:

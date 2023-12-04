@@ -122,6 +122,7 @@
             <div class="mb-2">
               <label class="form-label" for="item_name">Item Name:</label>
               <select name="item_name" required>
+                <option value="" selected disabled>Select an item</option>
                 {% for item in items %}
                 <option value="{{ item }}">{{ item }}</option>
                 {% endfor %}
@@ -138,6 +139,7 @@
               
               <label class="form-label" for="employee_name">Employee Name:</label>
               <select name="employee_name" required>
+                <option value="" selected disabled>Select Employee</option>
                 {% for faculty in faculty_names %}
                 <option value="{{ faculty.name }}">{{ faculty.name }}</option>
                 {% endfor %}
@@ -157,6 +159,7 @@
 
               <label class="form-label" for="department">Department:</label>
               <select name="department" required>
+                <option value="" selected disabled>Select Department</option>
                 {% for department in departments %}
                 <option value="{{ department.department }}">{{ department.department }}</option>
                 {% endfor %}
@@ -167,7 +170,7 @@
             <div class="mb-2">
               
               <label class="form-label" for="location">Location:</label>
-              <input type="text" class="form-control" name="location" required>
+              <input type="text" placeholder="eg. Lab 5" class="form-control" name="location" required>
               
             </div>
             
