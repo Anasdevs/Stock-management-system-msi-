@@ -61,5 +61,5 @@ class IssuedItem(models.Model):
     physical_verification = models.BooleanField(default=False)
 
     def __str__(self):
-        return (self.ItemName,self.Name_of_Employee,self.Department)
+        return f"{self.ItemName} - {self.Name_of_Employee} - {self.Department}"
     
