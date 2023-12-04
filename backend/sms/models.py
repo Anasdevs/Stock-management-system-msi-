@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Sum
+
 
 DEPARTMENT_CHOICES = [
     ('BCA', 'BCA'),
@@ -59,5 +61,5 @@ class IssuedItem(models.Model):
     physical_verification = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.ItemName} - {self.Name_of_Employee}"
+        return (self.ItemName,self.Name_of_Employee,self.Department)
     
