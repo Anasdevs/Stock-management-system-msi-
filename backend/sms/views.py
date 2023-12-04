@@ -92,7 +92,7 @@ def issued(request):
             )
 
             # Update the quantity in the Items model
-            item.Quantity -= int(quantity)
+            item.QuantityInInventory -= int(quantity)
             item.save()
 
             # Add a success message
