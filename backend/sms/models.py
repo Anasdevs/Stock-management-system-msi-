@@ -10,10 +10,13 @@ DEPARTMENT_CHOICES = [
     ('B.ED', 'B.ED'),
 ]
 
+class Department(models.Model):
+    department = models.CharField(max_length=50, choices=DEPARTMENT_CHOICES)
+
+
 class Faculty(models.Model):
     name = models.CharField(max_length=50)
     faculty_id=models.IntegerField(unique=True)
-    department = models.CharField(max_length=50, choices=DEPARTMENT_CHOICES)
 
     def __str__(self):
         return f"{self.name} - {self.faculty_id} - {self.department}"
@@ -24,14 +27,7 @@ class Items(models.Model):
     Quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.name}"
-    
-    def save(self, *args, **kwargs):
-        total_purchase_quantity = Purchase.objects.filter(ItemName=self).aggregate(Sum('Quantity'))['Quantity__sum'] or 0
-        total_issued_quantity = IssuedItem.objects.filter(ItemName__ItemName=self).aggregate(Sum('Quantity'))['Quantity__sum'] or 0
-
-        self.quantity = total_purchase_quantity - total_issued_quantity
-        super(Items, self).save(*args, **kwargs)
+        return self.name
 
 
 class Purchase(models.Model):
@@ -52,17 +48,13 @@ class Purchase(models.Model):
     def __str__(self):
         return f"{self.ItemName.name} - {self.Invoice_Number}"
     
-    # def save (self, *args,**kwargs):
-    #     self.GST = self.CGST + self.SGST + self.Extra_charges
-    #     self.Total_Amount = self.Quantity * self.Rate + self.GST
-    #     super(Purchase,self).save(*args,**kwargs)
 
 class IssuedItem(models.Model):
-    ItemName = models.ForeignKey(Purchase, on_delete=models.DO_NOTHING, related_name='issued_item_itemname') 
+    ItemName = models.ForeignKey(Items, on_delete=models.DO_NOTHING, related_name='issued_item_itemname') 
     Quantity = models.IntegerField()
     Name_of_Employee = models.ForeignKey(Faculty,max_length=50,on_delete=models.DO_NOTHING,related_name='issued_item_name_of_employee')
     Issue_Date = models.DateField()
-    # Department = models.ForeignKey(Faculty,max_length=50,choices=DEPARTMENT_CHOICES,on_delete=models.SET("Faculty Not Found"))
+    Department = models.ForeignKey(Department,max_length=50,choices=DEPARTMENT_CHOICES,on_delete=models.SET("Faculty Not Found"))
     Location = models.CharField(max_length=50)
     physical_verification = models.BooleanField(default=False)
 
