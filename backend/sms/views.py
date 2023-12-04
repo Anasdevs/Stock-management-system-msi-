@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import request
 from django.contrib import messages
-from .models import Purchase, IssuedItem, Items, Faculty
+from .models import Purchase, IssuedItem, Items, Faculty, Department
 from django.db.models import Sum
 from django.db import models
 
@@ -55,83 +55,102 @@ from django.http import HttpResponse
 
 from .models import IssuedItem, Faculty, Purchase
 
+
+
+from datetime import datetime  # Add this import if not already present
+
 def issued(request):
     if request.method == 'POST':
         item_name = request.POST.get('item_name')
         quantity = request.POST.get('quantity')
         employee_name = request.POST.get('employee_name')
-        issue_date = request.POST.get('issue_date')
-        # department_name = request.POST.get('department')
+        issue_date_str = request.POST.get('issue_date')  # Assuming 'issue_date' is the name of the date input in your form
+        department_name = request.POST.get('department')
         location = request.POST.get('location')
 
         try:
-            purchase_item = Purchase.objects.filter(ItemName__name=item_name).first()
+            # Get the item from the Items table
+            item = get_object_or_404(Items, name=item_name)
 
-            if not purchase_item:
-                return HttpResponse("Item not found in Purchase table")
-
+            # Get the employee from the Faculty table
             employee = get_object_or_404(Faculty, name=employee_name)
 
-            # department = get_object_or_404(Faculty, department=department_name)
+            # Get the department from the Department table
+            department = get_object_or_404(Department, department=department_name)
+
+            # Convert issue_date string to a datetime object
+            issue_date = datetime.strptime(issue_date_str, '%Y-%m-%d').date()
 
             # Create and save IssuedItem
             issued_item = IssuedItem.objects.create(
-                ItemName=purchase_item,
+                ItemName=item,
                 Quantity=quantity,
                 Name_of_Employee=employee,
                 Issue_Date=issue_date,
-                # Department=department,
+                Department=department,
                 Location=location,
             )
 
             # Update the quantity in the Items model
-            purchase_item.ItemName.Quantity -= int(quantity)
-            purchase_item.ItemName.save()
+            item.Quantity -= int(quantity)
+            item.save()
 
             # Add a success message
             message = "Item issued successfully."
             return render(request, 'Issued.html', {'message': message})
 
-        except Purchase.MultipleObjectsReturned:
-            return HttpResponse("Error: Multiple purchases found for the given item. Please check your data.")
+        except Items.DoesNotExist:
+            return HttpResponse("Item not found in Items table")
 
+        except Faculty.DoesNotExist:
+            return HttpResponse("Employee not found in Faculty table")
+
+        except Department.DoesNotExist:
+            return HttpResponse("Department not found in Department table")
+
+    # Fetch data to be displayed in the template
     issued_items = IssuedItem.objects.all()
     faculty_names = Faculty.objects.all()
-    items = Purchase.objects.values_list('ItemName__name', flat=True).distinct()
-    return render(request, 'Issued.html', {'faculty_names': faculty_names, 'items': items, 'issued_items': issued_items})
+    items = Items.objects.values_list('name', flat=True).distinct()
+    departments = Department.objects.all()
 
-
-
-
-
-
+    return render(request, 'Issued.html', {'faculty_names': faculty_names, 'items': items, 'issued_items': issued_items, 'departments': departments})
 
 
  
+
+
+
 def dashboard(request):
-    item = Items.objects.first() 
+    # Fetch all unique item names from the Purchase table
+    items = Purchase.objects.values_list('ItemName__name', flat=True).distinct()
 
-    total_purchased = Purchase.objects.filter(ItemName=item).aggregate(total=models.Sum('Quantity'))['total'] or 0
-    total_issued = IssuedItem.objects.filter(ItemName__ItemName=item).aggregate(total=models.Sum('Quantity'))['total'] or 0
-    inventory = item.Quantity - total_issued
+    # Create a list to store information for each item
+    item_info_list = []
 
-    context = {
-        'item': item,
-        'total_purchased': total_purchased,
-        'total_issued': total_issued,
-        'inventory': inventory,
-    }
+    # Calculate total purchased and total issued quantities for each item
+    for item_name in items:
+        total_purchased = Purchase.objects.filter(ItemName__name=item_name).aggregate(Sum('Quantity'))['Quantity__sum'] or 0
+        total_issued = IssuedItem.objects.filter(ItemName__name=item_name).aggregate(Sum('Quantity'))['Quantity__sum'] or 0
 
-    return render(request, 'dashboard.html', context)
+        # Calculate items in inventory for each item
+        inventory = total_purchased - total_issued
 
+        # Save or update the data in the Items model
+        item, created = Items.objects.get_or_create(name=item_name)
+        item.totalPurchased = total_purchased
+        item.ItemsIssued = total_issued
+        item.QuantityInInventory = inventory
+        item.save()
 
+        # Append item information to the list
+        item_info_list.append({
+            'name': item_name,
+            'total_purchased': total_purchased,
+            'total_issued': total_issued,
+            'inventory': inventory,
+        })
 
-
-
-
-
-
-
-
+    return render(request, 'dashboard.html', {'item_info_list': item_info_list})
 def reports(request):
     return render(request, 'reports.html')

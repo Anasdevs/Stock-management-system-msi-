@@ -26,7 +26,11 @@ class Faculty(models.Model):
 
 class Items(models.Model):
     name = models.CharField(max_length=50)
-    Quantity = models.IntegerField(default=0)
+    totalPurchased= models.IntegerField(default=0)
+    QuantityInInventory= models.IntegerField(default=0)
+    ItemsIssued = models.IntegerField(default = 0)
+
+
 
     def __str__(self):
         return self.name
