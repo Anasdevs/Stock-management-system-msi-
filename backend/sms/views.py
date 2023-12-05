@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import request
+from django.http import HttpResponse
 from django.contrib import messages
 from .models import Purchase, IssuedItem, Items, Faculty, Department
 from django.db.models import Sum
-from django.db import models
+from django.db import transaction
+from datetime import datetime
 
 
 def index(request):
@@ -50,15 +51,6 @@ def index(request):
     })
 
 
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
-
-from .models import IssuedItem, Faculty, Purchase
-from django.db import transaction
-
-
-
-from datetime import datetime  # Add this import if not already present
 def issued(request):
     if request.method == 'POST':
         item_name = request.POST.get('item_name')

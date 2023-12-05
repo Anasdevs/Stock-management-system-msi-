@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,30 +15,31 @@
   <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.bootstrap5.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/select/1.7.0/css/select.bootstrap5.min.css" rel="stylesheet">
-    
+
 
 </head>
 
 <style>
-    .dropdown-container {
-        position: relative;
-        width: 200px;
-        margin-bottom: 15px;
-    }
+  .dropdown-container {
+    position: relative;
+    width: 200px;
+    margin-bottom: 15px;
+  }
 
-    select {
-        width: 100%;
-        padding: 6px;
-        border: 1px solid #8f8888;
-        border-radius: 4px;
-        box-sizing: border-box;
-        appearance: none;
-        background-color: #fff;
-        cursor: pointer;
-    }
-    select:hover{
-      background-color: rgba(249, 245, 245, 0.66);
-    }
+  select {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #8f8888;
+    border-radius: 4px;
+    box-sizing: border-box;
+    appearance: none;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  select:hover {
+    background-color: rgba(249, 245, 245, 0.66);
+  }
 </style>
 
 <body class="body">
@@ -54,12 +56,14 @@
     </button>
     <div class="position-fixed top-0 start-50 translate-middle-x p-2" style="width: 50%;">
       {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show {% if message.tags == 'error' %}alert-danger{% endif %}" role="alert">
-              {{ message }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
+      <div
+        class="alert alert-{{ message.tags }} alert-dismissible fade show {% if message.tags == 'error' %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
       {% endfor %}
-  </div>
+    </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -70,12 +74,12 @@
   <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js"></script>
   <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/searchPanes.bootstrap5.min.js"></script>
   <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
-  
+
   <script>
-    $(document).ready(function() {
-        $('#example').DataTable({
-            // Add your DataTable options here
-        });
+    $(document).ready(function () {
+      $('#example').DataTable({
+        // Add your DataTable options here
+      });
     });
   </script>
 
@@ -95,14 +99,14 @@
       </thead>
       <tbody>
         {% for issued_item in issued_items %}
-          <tr>
-            <td>{{ issued_item.ItemName.name }}</td>
-            <td>{{ issued_item.Quantity }}</td>
-            <td>{{ issued_item.Name_of_Employee.name }}</td>
-            <td>{{ issued_item.Issue_Date }}</td>
-            <td>{{ issued_item.Department.department }}</td>
-            <td>{{ issued_item.Location }}</td>
-          </tr>
+        <tr>
+          <td>{{ issued_item.ItemName.name }}</td>
+          <td>{{ issued_item.Quantity }}</td>
+          <td>{{ issued_item.Name_of_Employee.name }}</td>
+          <td>{{ issued_item.Issue_Date }}</td>
+          <td>{{ issued_item.Department.department }}</td>
+          <td>{{ issued_item.Location }}</td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
@@ -128,7 +132,7 @@
                 {% endfor %}
               </select>
             </div>
-              
+
 
             <div class="mb-2">
               <label class="form-label" for="quantity">Quantity:</label>
@@ -136,7 +140,7 @@
             </div>
 
             <div class="mb-2">
-              
+
               <label class="form-label" for="employee_name">Employee Name:</label>
               <select name="employee_name" required>
                 <option value="" selected disabled>Select Employee</option>
@@ -144,7 +148,7 @@
                 <option value="{{ faculty.name }}">{{ faculty.name }}</option>
                 {% endfor %}
               </select>
-              
+
             </div>
 
 
@@ -152,7 +156,7 @@
 
               <label class="form-label" for="issue_date">Issue Date:</label>
               <input type="date" class="form-control" name="issue_date" required>
-              
+
             </div>
 
             <div class="mb-2">
@@ -164,16 +168,16 @@
                 <option value="{{ department.department }}">{{ department.department }}</option>
                 {% endfor %}
               </select>
-              
+
             </div>
 
             <div class="mb-2">
-              
+
               <label class="form-label" for="location">Location:</label>
               <input type="text" placeholder="eg. Lab 5" class="form-control" name="location" required>
-              
+
             </div>
-            
+
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
