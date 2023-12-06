@@ -51,9 +51,12 @@
   </div>
 
   <div class="d-flex justify-content-end custom-margin">
+    <div>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newEntryModal">
       Issue Item
     </button>
+    <button id="report" type="button" class="btn btn-primary">Download</button>
+  </div>
     <div class="position-fixed top-0 start-50 translate-middle-x p-2" style="width: 50%;">
       {% for message in messages %}
       <div
@@ -189,6 +192,50 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
   <script>
+    const exportBtn = document.getElementById('report');
+
+    exportBtn.addEventListener('click', () => {
+
+      // Get the header row
+      const headers = [];
+      const headerRow = document.querySelector('#example thead tr');
+      headerRow.querySelectorAll('th').forEach(th => {
+        headers.push(th.innerText);
+      });
+
+      // Get data rows
+      const rows = document.querySelectorAll('#example tbody tr');
+      const csvData = [headers.join(",")];
+
+      rows.forEach(row => {
+        const cols = row.querySelectorAll('td');
+        const csvRow = [];
+        cols.forEach(col => {
+          csvRow.push(col.innerText);
+        })
+        csvData.push(csvRow.join(","));
+      });
+
+      // Download CSV
+      downloadCSV(csvData.join("\n"), 'Issue-history.csv');
+
+    });
+
+    function downloadCSV(csv, filename) {
+      var csvFile;
+      var downloadLink;
+      // CSV file
+      csvFile = new Blob([csv], { type: "text/csv" });
+      // Download link
+      downloadLink = document.createElement("a");
+      // File name
+      downloadLink.download = filename;
+      downloadLink.href = window.URL.createObjectURL(csvFile);
+      downloadLink.style.display = "none";
+      document.body.appendChild(downloadLink);
+      // Click download link
+      downloadLink.click();
+    }
   </script>
 </body>
 
