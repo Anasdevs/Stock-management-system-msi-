@@ -105,8 +105,8 @@
           <td>{{ purchase.ItemName }}</td>
           <td>{{ purchase.Quantity }}</td>
           <td>{{ purchase.Invoice_Number }}</td>
-          <td>{{ purchase.Billing_Date }}</td>
-          <td>{{ purchase.Date_of_Entry }}</td>
+          <td>{{ purchase.Billing_Date|date:"F d, Y" }}</td>
+          <td>{{ purchase.Date_of_Entry|date:"F d, Y" }}</td>
           <td>{{ purchase.Total_Amount }}</td>
           <td>{{ purchase.Seller_Name }}</td>
         </tr>
