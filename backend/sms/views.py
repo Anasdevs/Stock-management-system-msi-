@@ -43,7 +43,7 @@ def index(request):
     purchases = Purchase.objects.all()
     message_list = messages.get_messages(request)
 
-    return render(request, 'home.html', {
+    return render(request, 'Purchase.html', {
         'purchases': purchases,
         'submitted': submitted,
         'messages': message_list,
@@ -153,3 +153,10 @@ def dashboard(request):
     return render(request, 'dashboard.html', {'item_info_list': item_info_list})
 def reports(request):
     return render(request, 'reports.html')
+
+def home(request):
+    return render(request, 'landing.html')
+
+
+def profile(request):
+    return render(request,'Profile.html')
