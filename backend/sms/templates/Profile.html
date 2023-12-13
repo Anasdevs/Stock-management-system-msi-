@@ -117,7 +117,7 @@
         background-color: #dc3545;
         /* position: absolute; */
         /* right: 5%; */
-        width: 12%;
+        width: 15%;
         /* bottom: 10%; */
     }
 
@@ -129,7 +129,7 @@
         background-color: rgb(199, 52, 52);
     }
 
-    /* @media (min-width:300px) and (max-width: 400px) {
+    @media (min-width:300px) and (max-width: 400px) {
         .profile-container {
             flex-direction: column;
         }
@@ -238,15 +238,14 @@
             right: 7.5%;
             bottom: 16%;
             width: 40%;
-        } */
-    /* } */
+        }
+    } 
 </style>
 <body>
     {% include 'sidebar.html'  %}
     <div class="profile-container">
         <div class="profile-left">
             <img class="faculty-image" src={facultyData.image} alt="Faculty" />
-            <Skeleton circle height={200} width={200} />
             <div class="faculty-name">
                 <h2>Mr.SP Chauhan</h2>
                 <p>Assistent Professor</p>
