@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -239,13 +240,14 @@
             bottom: 16%;
             width: 40%;
         }
-    } 
+    }
 </style>
+
 <body>
-    {% include 'sidebar.html'  %}
+    {% include 'sidebar.html' %}
     <div class="profile-container">
         <div class="profile-left">
-            <img class="faculty-image" src={facultyData.image} alt="Faculty" />
+            <img class="faculty-image" src="{% static 'images/Faculty.jpg' %}" alt="Faculty" />
             <div class="faculty-name">
                 <h2>Mr.SP Chauhan</h2>
                 <p>Assistent Professor</p>
