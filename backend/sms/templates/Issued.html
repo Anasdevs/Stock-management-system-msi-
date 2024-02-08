@@ -96,6 +96,7 @@
           <th scope="col">Employee Name</th>
           <th scope="col">Issue Date</th>
           <th scope="col">Department</th>
+          <th scope="col">Refrence No.</th>
           <th scope="col">Location</th>
         </tr>
       </thead>
@@ -107,6 +108,7 @@
           <td>{{ issued_item.Name_of_Employee.name }}</td>
           <td>{{ issued_item.Issue_Date|date:"Y M d" }}</td>
           <td>{{ issued_item.Department.department }}</td>
+          <td>{{ issued_item.Refrence_No}}</td>
           <td>{{ issued_item.Location }}</td>
         </tr>
         {% endfor %}
@@ -171,6 +173,11 @@
                 {% endfor %}
               </select>
 
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label" for="refrence_No">Refrence No:</label>
+              <input type="text" placeholder="eg. 1234" class="form-control" name="refrence_No" required>
             </div>
 
             <div class="mb-2">

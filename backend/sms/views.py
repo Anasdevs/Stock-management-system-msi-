@@ -58,6 +58,7 @@ def issued(request):
         employee_name = request.POST.get('employee_name')
         issue_date_str = request.POST.get('issue_date')
         department_name = request.POST.get('department')
+        refrence_No = request.POST.get('refrence_No')
         location = request.POST.get('location')
 
         try:
@@ -87,6 +88,7 @@ def issued(request):
                     Name_of_Employee=employee,
                     Issue_Date=issue_date,
                     Department=department,
+                    Refrence_No=refrence_No,
                     Location=location,
                 )
 

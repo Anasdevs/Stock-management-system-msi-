@@ -61,6 +61,7 @@ class IssuedItem(models.Model):
     Name_of_Employee = models.ForeignKey(Faculty,max_length=50,on_delete=models.DO_NOTHING,related_name='issued_item_name_of_employee')
     Issue_Date = models.DateField()
     Department = models.ForeignKey(Department,on_delete=models.SET("Faculty Not Found"))
+    Refrence_No = models.CharField(max_length=50,default="Not Found")
     Location = models.CharField(max_length=50)
     physical_verification = models.BooleanField(default=False)
 
