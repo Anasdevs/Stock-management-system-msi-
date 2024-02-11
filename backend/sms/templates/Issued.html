@@ -146,6 +146,8 @@
           </div>
         </div>
       </div>
+
+      <button id="clear-filters" class="btn btn-secondary mt-3">Clear Filters</button>
     
     </div>
 
@@ -311,11 +313,6 @@
   </script>
 
 <script>
-  // $(document).ready(function () {
-  //   var table = $('#example').DataTable({
-  //     // Add your DataTable options here
-  //   });
-
     // Add Employee Name filter
     $('#employee-filter').on('change', function () {
       table.column(2).search($(this).val()).draw();
@@ -344,7 +341,11 @@
       format: 'YYYY MMM DD'
     });
 
-    let table = new DataTable('#example');
+    var table = new DataTable('#example');
+    lengthMenu: [
+      [25, 50, -1],
+      [25, 50, 'All']
+    ]
 
     document.querySelectorAll('#min, #max').forEach((el) => {
       el.addEventListener('change', () => table.draw());
@@ -370,6 +371,23 @@
       return monthIndex !== -1 ? monthIndex : NaN;
     }
   
+    $('#clear-filters').on('click', function () {
+  // Check if Employee Name filter is active
+  if ($('#employee-filter').val() !== null) {
+    $('#employee-filter').val('').trigger('change');
+  }
+
+  // Empty the date inputs
+  $('#min').val('');
+  $('#max').val('');
+
+  // Trigger change event to ensure DataTable is updated
+  $('#min, #max').trigger('change');
+
+  // Clear DataTable filters without affecting visibility
+  table.search('').columns().search('').draw();
+});
+
 </script>
 
 </body>
