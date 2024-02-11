@@ -341,12 +341,12 @@
       format: 'YYYY MMM DD'
     });
 
-    var table = new DataTable('#example');
+    var table = new DataTable('#example',{
     lengthMenu: [
-      [25, 50, -1],
-      [25, 50, 'All']
+        [25, 50, -1],
+        [25, 50, 'All']
     ]
-
+});
     document.querySelectorAll('#min, #max').forEach((el) => {
       el.addEventListener('change', () => table.draw());
     });
