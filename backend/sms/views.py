@@ -123,6 +123,17 @@ def issued(request):
 
 
 def dashboard(request):
+    if request.method == 'POST':
+        item_name=request.POST.get('item_name')
+        total_purchased=0
+        total_issued=0
+        inventory=0
+        Items.objects.create(
+            name=item_name,
+            totalPurchased=total_purchased,
+            ItemsIssued=total_issued,
+            QuantityInInventory=inventory)
+
     # Fetch all unique item names from the Purchase table
     items = Purchase.objects.values_list('ItemName__name', flat=True).distinct()
 
