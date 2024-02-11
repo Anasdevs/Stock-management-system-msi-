@@ -16,6 +16,10 @@
   <link href="https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.bootstrap5.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/select/1.7.0/css/select.bootstrap5.min.css" rel="stylesheet">
 
+  <!-- CSS cdn for date filters-->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css">
+
 
 </head>
 
@@ -40,6 +44,36 @@
   select:hover {
     background-color: rgba(249, 245, 245, 0.66);
   }
+
+  .filters {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.filter-emp,
+.filter-date {
+  margin-right: 30px;
+}
+
+.dropdown-container,
+.date-inputs {
+  display: flex;
+  align-items: center;
+}
+
+.date-input {
+  margin-right: 20px;
+}
+
+.date-input input{
+  padding: 6px;
+}
+.date-input label {
+  margin-right: 5px;
+}
+
+
 </style>
 
 <body class="body">
@@ -77,17 +111,48 @@
   <script src="https://cdn.datatables.net/searchpanes/2.2.0/js/searchPanes.bootstrap5.min.js"></script>
   <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
-  <script>
-    $(document).ready(function () {
-      $('#example').DataTable({
-        // Add your DataTable options here
-      });
-    });
-  </script>
-
+  <!-- For date filters-->
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
 
   <div class="Table-container">
     <h3>Issued History</h3>
+
+    <div class="filters">
+      <div class="filter-emp">
+        <label for="employee-filter" class="form-label">Filter by Employee:</label>
+        <div class="dropdown-container">
+          <select id="employee-filter" class="custom-dropdown">
+            <option value="" selected disabled>Select Employee</option>
+            {% for faculty in faculty_names %}
+            <option value="{{ faculty.name }}">{{ faculty.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+  
+      <div class="filter-date mb-3">
+        <label for="employee-filter" class="form-label">Filter by Issue Date</label>
+        <div class="date-inputs">
+          <div class="date-input">
+            <label for="min">From</label>
+            <input type="text" id="min" name="min" placeholder="Select the Start Date">
+          </div>
+          <div class="date-input">
+            <label for="max">To</label>
+            <input type="text" id="max" name="max" placeholder="Select the End Date">
+          </div>
+        </div>
+      </div>
+
+      <button id="clear-filters" class="btn btn-secondary mt-3">Clear Filters</button>
+    
+    </div>
+
+    
+    
     <table id="example" class="table table-striped nowrap">
       <thead>
         <tr>
@@ -242,7 +307,89 @@
       // Click download link
       downloadLink.click();
     }
+
+
+    
   </script>
+
+<script>
+    // Add Employee Name filter
+    $('#employee-filter').on('change', function () {
+      table.column(2).search($(this).val()).draw();
+    });
+ 
+ DataTable.ext.search.push(function (settings, data, dataIndex) {
+      let min = parseDate($('#min').val());
+      let max = parseDate($('#max').val());
+      let date = parseDate(data[3]);
+
+      if (
+        (min === null && max === null) ||
+        (min === null && date <= max) ||
+        (min <= date && max === null) ||
+        (min <= date && date <= max)
+      ) {
+        return true;
+      }
+      return false;
+    });
+
+    let minDate = new DateTime('#min', {
+      format: 'YYYY MMM DD'
+    });
+    let maxDate = new DateTime('#max', {
+      format: 'YYYY MMM DD'
+    });
+
+    var table = new DataTable('#example',{
+    lengthMenu: [
+        [25, 50, -1],
+        [25, 50, 'All']
+    ]
+});
+    document.querySelectorAll('#min, #max').forEach((el) => {
+      el.addEventListener('change', () => table.draw());
+    });
+
+    function parseDate(dateString) {
+      if (!dateString) return null;
+
+      const parts = dateString.split(' ');
+      if (parts.length !== 3) return null;
+
+      const year = parseInt(parts[0]);
+      const month = parseMonth(parts[1]);
+      const day = parseInt(parts[2]);
+
+      if (isNaN(year) || isNaN(month) || isNaN(day)) return null;
+
+      return new Date(year, month, day);
+    }
+    function parseMonth(monthAbbreviation) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthIndex = months.indexOf(monthAbbreviation);
+      return monthIndex !== -1 ? monthIndex : NaN;
+    }
+  
+    $('#clear-filters').on('click', function () {
+  // Check if Employee Name filter is active
+  if ($('#employee-filter').val() !== null) {
+    $('#employee-filter').val('').trigger('change');
+  }
+
+  // Empty the date inputs
+  $('#min').val('');
+  $('#max').val('');
+
+  // Trigger change event to ensure DataTable is updated
+  $('#min, #max').trigger('change');
+
+  // Clear DataTable filters without affecting visibility
+  table.search('').columns().search('').draw();
+});
+
+</script>
+
 </body>
 
 </html>
