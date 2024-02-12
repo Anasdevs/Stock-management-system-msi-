@@ -51,7 +51,7 @@
   margin-top: 10px;
 }
 
-.filter-emp,
+.filter-emp, .filter-dept,
 .filter-date {
   margin-right: 30px;
 }
@@ -127,11 +127,24 @@
           <select id="employee-filter" class="custom-dropdown">
             <option value="" selected disabled>Select Employee</option>
             {% for faculty in faculty_names %}
-            <option value="{{ faculty.name }}">{{ faculty.name }}</option>
+              <option value="{{ faculty.name }}">{{ faculty.name }}</option>
             {% endfor %}
           </select>
         </div>
       </div>
+      
+      <div class="filter-dept">
+        <label for="department-filter" class="form-label">Filter by Department:</label>
+        <div class="dropdown-container">
+          <select id="department-filter" class="custom-dropdown">
+            <option value="" selected disabled>Select Department</option>
+            {% for department in departments %}
+              <option value="{{ department.department }}">{{ department.department }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      
   
       <div class="filter-date mb-3">
         <label for="employee-filter" class="form-label">Filter by Issue Date</label>
@@ -148,6 +161,8 @@
       </div>
 
       <button id="clear-filters" class="btn btn-secondary mt-3">Clear Filters</button>
+
+     
     
     </div>
 
@@ -317,6 +332,10 @@
     $('#employee-filter').on('change', function () {
       table.column(2).search($(this).val()).draw();
     });
+    //Deptartment filter
+    $('#department-filter').on('change', function () {
+      table.column(4).search($(this).val()).draw();
+    });
  
  DataTable.ext.search.push(function (settings, data, dataIndex) {
       let min = parseDate($('#min').val());
@@ -375,6 +394,10 @@
   // Check if Employee Name filter is active
   if ($('#employee-filter').val() !== null) {
     $('#employee-filter').val('').trigger('change');
+  }
+
+  if ($('#department-filter').val() !== null) {
+    $('#department-filter').val('').trigger('change');
   }
 
   // Empty the date inputs
