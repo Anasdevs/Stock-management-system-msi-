@@ -5,6 +5,7 @@ from .models import Purchase, IssuedItem, Items, Faculty, Department
 from django.db.models import Sum
 from django.db import transaction
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def index(request):
@@ -124,15 +125,26 @@ def issued(request):
 
 def dashboard(request):
     if request.method == 'POST':
-        item_name=request.POST.get('item_name')
-        total_purchased=0
-        total_issued=0
-        inventory=0
-        Items.objects.create(
-            name=item_name,
-            totalPurchased=total_purchased,
-            ItemsIssued=total_issued,
-            QuantityInInventory=inventory)
+        item_name = request.POST.get('item_name')
+
+        # Convert item name to lowercase for consistency
+        item_name_upper = item_name.upper()
+
+        # Check if an item with the same name (case-insensitive) already exists
+        existing_item = Items.objects.filter(name__iexact=item_name_upper).first()
+
+        try:
+            item = Items.objects.get(name=existing_item)
+            messages.error(request, 'Item already exists.')
+
+        except ObjectDoesNotExist:
+            Items.objects.create(
+                name=item_name_upper,
+                totalPurchased=0,
+                ItemsIssued=0,
+                QuantityInInventory=0
+            )
+            messages.success(request, 'New item added successfully.')
 
     # Fetch all unique item names from the Purchase table
     items = Purchase.objects.values_list('ItemName__name', flat=True).distinct()
