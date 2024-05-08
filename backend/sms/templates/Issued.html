@@ -175,7 +175,7 @@
           <th scope="col">Employee Name</th>
           <th scope="col">Issue Date</th>
           <th scope="col">Department</th>
-          <th scope="col">Refrence No.</th>
+          <th scope="col">Reference No.</th>
           <th scope="col">Location</th>
         </tr>
       </thead>
@@ -238,9 +238,16 @@
             <div class="mb-2">
 
               <label class="form-label" for="issue_date">Issue Date:</label>
-              <input type="date" class="form-control" name="issue_date" required>
+              <input type="date" class="form-control" name="issue_date" id="issue_date" required>
 
             </div>
+
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                var today = new Date().toISOString().split('T')[0];
+                document.getElementById('issue_date').value = today;
+              });
+              </script>
 
             <div class="mb-2">
 
@@ -255,8 +262,8 @@
             </div>
 
             <div class="mb-2">
-              <label class="form-label" for="refrence_No">Refrence No:</label>
-              <input type="text" placeholder="eg. 1234" class="form-control" name="refrence_No" required>
+              <label class="form-label" for="refrence_No">Reference No:</label>
+              <input type="text" placeholder="eg. BCA/1-10" class="form-control" name="refrence_No" required>
             </div>
 
             <div class="mb-2">

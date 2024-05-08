@@ -228,17 +228,24 @@
 
             <div class="mb-2">
               <label class="form-label">Date of Entry</label>
-              <input type="date" class="form-control" name="date_of_entry" required>
+              <input type="date" class="form-control" name="date_of_entry" id="date_of_entry" required>
             </div>
+            
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              var today = new Date().toISOString().split('T')[0];
+              document.getElementById('date_of_entry').value = today;
+            });
+            </script>
 
             <div class="mb-2">
               <label class="form-label">CGST</label>
-              <input type="number" class="form-control" name="cgst" id="cgst" placeholder="Enter CGST in %" required>
+              <input type="number" class="form-control" name="cgst" id="cgst" placeholder="Enter CGST in % or 0 if not applicable" required>
             </div>
 
             <div class="mb-2">
               <label class="form-label">SGST</label>
-              <input type="number" class="form-control" name="sgst" id="sgst" placeholder="Enter SGST in %" required>
+              <input type="number" class="form-control" name="sgst" id="sgst" placeholder="Enter SGST in % or 0 if not applicable" required>
             </div>
 
             <div class="mb-2">
